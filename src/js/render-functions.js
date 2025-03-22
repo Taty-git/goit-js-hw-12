@@ -51,3 +51,15 @@ export function initializeLightbox() {
 
     lightbox.refresh(); 
 }
+export function showloadMore() {
+    const loadMore = document.querySelector('.load-more');
+    if (loadMore) {
+        loadMore.style.display = 'inline-block'; 
+    }
+}
+export function hideloadMore() {
+    const loadMore = document.querySelector('.load-more');
+    if (loadMore) {
+        loadMore.style.display = 'none'; 
+    }
+};
