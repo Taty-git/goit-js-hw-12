@@ -6,7 +6,7 @@ import { showLoader, hideLoader, clearGallery, renderImages, initializeLightbox 
 const form = document.querySelector('.form');
 hideLoader();
 
-form.addEventListener('submit', function (event) {
+form.addEventListener('submit', async function (event) {
   event.preventDefault(); 
   const searchText = form.querySelector('input[name="search-text"]').value.trim();
 
@@ -26,31 +26,31 @@ form.addEventListener('submit', function (event) {
     clearGallery();
   }
 
-  fetchImages(searchText)
-    .then(response => {
-      hideLoader(); 
+  try {
+    const response = await fetchImages(searchText);
+    hideLoader();
 
-      const images = response.data.hits;
+    const images = response.data.hits;
 
 
-      if (images.length === 0) {
-        iziToast.warning({
-          title: 'Caution',
-          message: 'Sorry, there are no images matching your search query. Please try again!',
-        });
-        return; 
-      }
+    if (images.length === 0) {
+      iziToast.warning({
+        title: 'Caution',
+        message: 'Sorry, there are no images matching your search query. Please try again!',
+      });
+      return;
+    }
 
-      renderImages(images);
-      initializeLightbox();
+    renderImages(images);
+    initializeLightbox();
 
-    })
-    .catch(error => {
+    
+  } catch(error) {
       hideLoader(); 
       iziToast.error({
         title: 'Error',
         message: 'Illegal operation.',
       });
       console.error(error);
-    });
+    }
 });
