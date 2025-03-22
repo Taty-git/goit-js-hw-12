@@ -14,6 +14,7 @@ export const fetchImages = async (searchText) => {
         orientation: 'horizontal',
         safesearch: true,
         per_page: 15,
+        
       }
     });
     return response;

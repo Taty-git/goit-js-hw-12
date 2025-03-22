@@ -4,6 +4,9 @@ import { fetchImages } from './js/pixabay-api.js';
 import { showLoader, hideLoader, clearGallery, renderImages, initializeLightbox, showloadMore, hideloadMore } from './js/render-functions.js';
 
 const form = document.querySelector('.form');
+let currentPage = 1;
+let currentSearchText = '';
+
 hideLoader();
 hideloadMore();
 
@@ -19,22 +22,18 @@ form.addEventListener('submit', async function (event) {
     });
     return;
   }
+  if (searchText !== currentSearchText) {
+    currentPage = 1; 
+    clearGallery();
+    currentSearchText = searchText; 
+  }
   showLoader();
 
-  let gallery = document.querySelector('.gallery');
-  if (!gallery) {
-    gallery = createGallery();
-    
-  } else {
-    clearGallery();
-  }
-
-  try {
-    const response = await fetchImages(searchText);
+   try {
+    const response = await fetchImages(currentSearchText, currentPage); // Додаємо параметр сторінки
     hideLoader();
 
     const images = response.data.hits;
-
 
     if (images.length === 0) {
       iziToast.warning({
@@ -47,13 +46,50 @@ form.addEventListener('submit', async function (event) {
     renderImages(images);
     initializeLightbox();
 
-    
-  } catch(error) {
-      hideLoader(); 
+    // Показуємо кнопку "Load more", якщо зображення є
+    showloadMore();
+
+  } catch (error) {
+    hideLoader();
+    iziToast.error({
+      title: 'Error',
+      message: 'Illegal operation.',
+    });
+    console.error(error);
+  }
+});
+
+
+const loadMoreButton = document.querySelector('.load-more');
+if (loadMoreButton) {
+  loadMoreButton.addEventListener('click', async () => {
+    currentPage += 1;
+    showLoader();
+
+    try {
+      const response = await fetchImages(currentSearchText, currentPage); // Додаємо параметр сторінки
+      hideLoader();
+
+      const images = response.data.hits;
+
+      if (images.length === 0) {
+        iziToast.warning({
+          title: 'Caution',
+          message: 'Sorry, no more images available.',
+        });
+        hideloadMore(); 
+        return;
+      }
+
+      renderImages(images);
+      initializeLightbox();
+    } catch (error) {
+      hideLoader();
       iziToast.error({
         title: 'Error',
-        message: 'Illegal operation.',
+        message: 'Error loading more images.',
       });
       console.error(error);
     }
-});
+  });
+}

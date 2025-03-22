@@ -54,7 +54,7 @@ export function initializeLightbox() {
 export function showloadMore() {
     const loadMore = document.querySelector('.load-more');
     if (loadMore) {
-        loadMore.style.display = 'inline-block'; 
+        loadMore.style.display = 'flex'; 
     }
 }
 export function hideloadMore() {

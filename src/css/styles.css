@@ -8,6 +8,15 @@
 @import url('./reset.css');
 @import url('./base.css');
 
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: flex-start;
+  align-items: center;
+  padding-bottom: 20px;
+  
+}
 .form {
   display: flex;
   justify-content: center;
@@ -31,7 +40,7 @@ input::placeholder {
   line-height: 1.5;
   letter-spacing: 0.04em;
   color: #808080;
-}
+}* Щоб кнопка не прилипала до самого низу */
 input:hover {
   border: 1px solid #000000;
 }
@@ -39,7 +48,6 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: row;
   border-radius: 8px;
   padding: 8px 16px;
   width: 91px;
@@ -153,4 +161,8 @@ p {
   padding: 8px 16px;
   width: 125px;
   height: 40px;
+  margin-top: 40px;
+  align-self: center;
+  
+  
 }
