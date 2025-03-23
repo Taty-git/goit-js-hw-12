@@ -46,7 +46,6 @@ form.addEventListener('submit', async function (event) {
     renderImages(images);
     initializeLightbox();
 
-    // Показуємо кнопку "Load more", якщо зображення є
     showloadMore();
 
   } catch (error) {
@@ -59,15 +58,16 @@ form.addEventListener('submit', async function (event) {
   }
 });
 
-
 const loadMoreButton = document.querySelector('.load-more');
+
 if (loadMoreButton) {
   loadMoreButton.addEventListener('click', async () => {
+    
     currentPage += 1;
     showLoader();
 
     try {
-      const response = await fetchImages(currentSearchText, currentPage); // Додаємо параметр сторінки
+      const response = await fetchImages(currentSearchText, currentPage); 
       hideLoader();
 
       const images = response.data.hits;
