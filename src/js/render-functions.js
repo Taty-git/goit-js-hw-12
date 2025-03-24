@@ -1,6 +1,11 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 export function showLoader() {
     const loader = document.querySelector('.loader');
     if (loader) {
@@ -16,47 +21,64 @@ export function hideLoader() {
 };
 
 export const clearGallery = () => {
-  let gallery = document.querySelector('.gallery');
-  if (gallery) {
-    gallery.innerHTML = '';
-  }
+  const gallery = document.querySelector('.gallery');
+  gallery.innerHTML = '';  
+  smoothScroll(); 
 };
 
 export function renderImages(images) {
-    const gallery = document.querySelector('.gallery');
+  const gallery = document.querySelector('.gallery');
 
-    images.forEach(image => {
-        const galleryItem = document.createElement('li');
-        galleryItem.classList.add('gallery-item');
-
-        galleryItem.innerHTML = `
-            <a href="${image.largeImageURL}"><img src="${image.webformatURL}" alt="${image.tags}"></a>
-            <div class="info">
-                <p><b>Likes</b><br>${image.likes}</p>
-                <p><b>Views</b><br>${image.views}</p>
-                <p><b>Comments</b><br>${image.comments}</p>
-                <p><b>Downloads</b><br>${image.downloads}</p>
+  gallery.insertAdjacentHTML('beforeend', images
+    .map(
+      ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
+      <li class="gallery-item">
+        <a class="gallery-link" href="${largeImageURL}">
+          <img class="gallery-image" src="${webformatURL}" alt="${tags}" loading="lazy" />
+        </a>
+        <div class="info">
+                <p><b>Likes</b><br>${likes}</p>
+                <p><b>Views</b><br>${views}</p>
+                <p><b>Comments</b><br>${comments}</p>
+                <p><b>Downloads</b><br>${downloads}</p>
             </div>
-        `;
+      </li>`
+    ).join(''));
 
-        gallery.appendChild(galleryItem);
-    });
+  lightbox.refresh();
 }
 
 export function initializeLightbox() {
-    const lightbox = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionDelay: 250,
+  if (!lightbox) {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
     });
-
-    lightbox.refresh(); 
+  }
+  lightbox.refresh(); 
 }
+
+export function smoothScroll() {
+    const firstCard = document.querySelector('.gallery-item');
+
+    if (firstCard) {
+        const cardHeight = firstCard.getBoundingClientRect().height;
+
+        window.scrollBy({
+            top: cardHeight * 2,
+            left: 0,
+            behavior: "smooth",
+        });
+    }
+}
+
 export function showloadMore() {
     const loadMore = document.querySelector('.load-more');
     if (loadMore) {
         loadMore.style.display = 'flex'; 
     }
 }
+
 export function hideloadMore() {
     const loadMore = document.querySelector('.load-more');
     if (loadMore) {
