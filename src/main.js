@@ -28,6 +28,7 @@ form.addEventListener('submit', async function (event) {
     currentSearchText = searchText; 
   }
   showLoader();
+  hideloadMore();
 
   try {
     
@@ -40,6 +41,7 @@ form.addEventListener('submit', async function (event) {
         title: 'Caution',
         message: 'Sorry, there are no images matching your search query. Please try again!',
       });
+      hideloadMore();
       return;
     }
 
@@ -50,11 +52,12 @@ form.addEventListener('submit', async function (event) {
     showloadMore();
 
   } catch (error) {
-    hideLoader();
+    hideloadMore();
     iziToast.error({
       title: 'Error',
       message: 'Illegal operation.',
     });
+    hideloadMore();
     console.error(error);
   }
 });
@@ -67,7 +70,8 @@ if (loadMoreButton) {
     showLoader(); 
     try {
       const response = await fetchImages(currentSearchText, currentPage);  
-      hideLoader();  
+      hideLoader();
+      hideloadMore();  
 
       
       if (!response || !response.hits || response.hits.length === 0) {
@@ -93,6 +97,7 @@ if (loadMoreButton) {
         title: 'Error',
         message: 'Error loading more images.',
       });
+      hideloadMore();
       console.error(error);
     }
   });
