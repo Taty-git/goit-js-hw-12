@@ -6,6 +6,7 @@ import { showLoader, hideLoader, clearGallery, renderImages, initializeLightbox,
 const form = document.querySelector('.form');
 let currentPage = 1;
 let currentSearchText = '';
+
 hideLoader();
 hideloadMore();
 
@@ -28,7 +29,6 @@ form.addEventListener('submit', async function (event) {
     currentSearchText = searchText; 
   }
   showLoader();
-  hideloadMore();
 
   try {
     
@@ -41,7 +41,6 @@ form.addEventListener('submit', async function (event) {
         title: 'Caution',
         message: 'Sorry, there are no images matching your search query. Please try again!',
       });
-      hideloadMore();
       return;
     }
 
@@ -52,12 +51,12 @@ form.addEventListener('submit', async function (event) {
     showloadMore();
 
   } catch (error) {
-    hideloadMore();
+    hideLoader();
     iziToast.error({
       title: 'Error',
       message: 'Illegal operation.',
     });
-    hideloadMore();
+    
     console.error(error);
   }
 });
@@ -65,16 +64,16 @@ const loadMoreButton = document.querySelector('.load-more');
 
 if (loadMoreButton) {
   loadMoreButton.addEventListener('click', async () => {
-    currentPage += 1; 
+     currentPage += 1; 
+       
 
     showLoader(); 
     try {
       const response = await fetchImages(currentSearchText, currentPage);  
-      hideLoader();
-      hideloadMore();  
+      hideLoader();  
 
       
-      if (!response || !response.hits || response.hits.length === 0) {
+      if (!response || !response.hits || response.hits.length === 0 || response.totalHits <= currentPage * 15) {
         iziToast.warning({
           title: 'Caution',
           message: 'Sorry, no more images available.',
@@ -97,7 +96,6 @@ if (loadMoreButton) {
         title: 'Error',
         message: 'Error loading more images.',
       });
-      hideloadMore();
       console.error(error);
     }
   });
