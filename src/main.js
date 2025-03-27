@@ -6,6 +6,7 @@ import { showLoader, hideLoader, clearGallery, renderImages, initializeLightbox,
 const form = document.querySelector('.form');
 let currentPage = 1;
 let currentSearchText = '';
+let totalHits = 0;
 
 hideLoader();
 hideloadMore();
@@ -36,19 +37,25 @@ form.addEventListener('submit', async function (event) {
     
     hideLoader();
 
-    if (!response || !response.hits || response.hits.length === 0) {
+    if (!response || !response.hits || response.hits.length === 0 ) {
       iziToast.warning({
         title: 'Caution',
         message: 'Sorry, there are no images matching your search query. Please try again!',
       });
+      hideloadMore();
       return;
-    }
+    } 
 
-    const images = response.hits;  
+    const images = response.hits;
+    totalHits = response.totalHits;
 
     renderImages(images);
     initializeLightbox();
     showloadMore();
+
+    if (currentPage * 15 >= totalHits) {
+        hideloadMore();
+      }
 
   } catch (error) {
     hideLoader();

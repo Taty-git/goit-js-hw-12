@@ -15,13 +15,12 @@ main {
   justify-content: flex-start;
   align-items: center;
   padding-bottom: 20px;
-  
 }
 .form {
   display: flex;
   justify-content: center;
   margin-top: 36px;
-  align-items: center;  
+  align-items: center;
 }
 input {
   display: flex;
@@ -31,7 +30,7 @@ input {
   border: 1px solid #808080;
   border-radius: 4px;
   width: 272px;
-  height: 36px;  
+  height: 36px;
 }
 input::placeholder {
   font-family: var(--font-family);
@@ -40,8 +39,8 @@ input::placeholder {
   line-height: 1.5;
   letter-spacing: 0.04em;
   color: #808080;
-}* Щоб кнопка не прилипала до самого низу */
-input:hover {
+}
+* Щоб кнопка не прилипала до самого низу */ input:hover {
   border: 1px solid #000000;
 }
 button {
@@ -75,42 +74,42 @@ button {
 
 .loader::before,
 .loader::after {
-  content: "";
+  content: '';
   box-sizing: border-box;
   position: absolute;
   inset: 0px;
   border-radius: 50%;
-  border: 5px solid #FFF;
+  border: 5px solid #fff;
   animation: prixClipFix 5s linear infinite;
 }
 
 .loader::after {
   transform: rotate3d(90, 90, 0, 180deg);
-  border-color: #FF3D00;
+  border-color: #ff3d00;
 }
 
 @keyframes rotate {
   0% {
-    transform: rotate(0deg)
+    transform: rotate(0deg);
   }
 
   100% {
-    transform: rotate(360deg)
+    transform: rotate(360deg);
   }
 }
 
 @keyframes prixClipFix {
   0% {
-    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0)
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
   }
 
   50% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0)
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
   }
 
   75%,
   100% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%)
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
   }
 }
 .gallery {
@@ -153,7 +152,7 @@ p {
   display: block;
 }
 .load-more {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -163,6 +162,4 @@ p {
   height: 40px;
   margin-top: 40px;
   align-self: center;
-  
-  
 }
